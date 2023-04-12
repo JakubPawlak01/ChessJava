@@ -2,39 +2,39 @@ public class ChessBoard {
     Square[][] board;
     public ChessBoard(){
         board = new Square[8][8];
-        Rook R1 = new Rook(false,"r1");
-        Rook R2 = new Rook(false,"r2");
-        Rook R3 = new Rook(true,"r3");
-        Rook R4 = new Rook(true,"r3");
-        Knight KN1 = new Knight(false,"kn1");
-        Knight KN2 = new Knight(false,"kn2");
-        Knight KN3 = new Knight(true,"kn3");
-        Knight KN4 = new Knight(true,"kn4");
-        Bishop B1 = new Bishop(false, "b1");
-        Bishop B2 = new Bishop(false, "b2");
-        Bishop B3 = new Bishop(true, "b3");
-        Bishop B4 = new Bishop(true, "b4");
-        Queen Q1 = new Queen(false,"q1");
-        Queen Q2 = new Queen(true,"q2");
-        King K1 = new King(false,"k1");
-        King K2 = new King(true,"k2");
-        Pawn P1 = new Pawn(false,"p1");
-        Pawn P2 = new Pawn(false,"p2");
-        Pawn P3 = new Pawn(false,"p3");
-        Pawn P4 = new Pawn(false,"p4");
-        Pawn P5 = new Pawn(false,"p5");
-        Pawn P6 = new Pawn(false,"p6");
-        Pawn P7 = new Pawn(false,"p7");
-        Pawn P8 = new Pawn(false,"p8");
+        Rook R1 = new Rook(false,"R");
+        Rook R2 = new Rook(false,"R");
+        Rook R3 = new Rook(true,"R");
+        Rook R4 = new Rook(true,"R");
+        Knight KN1 = new Knight(false,"K");
+        Knight KN2 = new Knight(false,"K");
+        Knight KN3 = new Knight(true,"K");
+        Knight KN4 = new Knight(true,"K");
+        Bishop B1 = new Bishop(false, "B");
+        Bishop B2 = new Bishop(false, "B");
+        Bishop B3 = new Bishop(true, "B");
+        Bishop B4 = new Bishop(true, "B");
+        Queen Q1 = new Queen(false,"Q");
+        Queen Q2 = new Queen(true,"Q");
+        King K1 = new King(false,"k");
+        King K2 = new King(true,"k");
+        Pawn P1 = new Pawn(false,"P");
+        Pawn P2 = new Pawn(false,"P");
+        Pawn P3 = new Pawn(false,"P");
+        Pawn P4 = new Pawn(false,"P");
+        Pawn P5 = new Pawn(false,"P");
+        Pawn P6 = new Pawn(false,"P");
+        Pawn P7 = new Pawn(false,"P");
+        Pawn P8 = new Pawn(false,"P");
 
-        Pawn P10 = new Pawn(true, "p10");
-        Pawn P11 = new Pawn(true, "p11");
-        Pawn P12 = new Pawn(true, "p12");
-        Pawn P13 = new Pawn(true, "p13");
-        Pawn P14 = new Pawn(true, "p14");
-        Pawn P15 = new Pawn(true, "p15");
-        Pawn P16 = new Pawn(true, "p16");
-        Pawn P17 = new Pawn(true, "p17");
+        Pawn P10 = new Pawn(true, "P");
+        Pawn P11 = new Pawn(true, "P");
+        Pawn P12 = new Pawn(true, "P");
+        Pawn P13 = new Pawn(true, "P");
+        Pawn P14 = new Pawn(true, "P");
+        Pawn P15 = new Pawn(true, "P");
+        Pawn P16 = new Pawn(true, "P");
+        Pawn P17 = new Pawn(true, "P");
         
 
         Square a8 = new Square(0, 0, R1,"a8");
@@ -184,13 +184,16 @@ public class ChessBoard {
         
     }
 
-    public void printboard(){
-        for(int i=0; i<8; i++){
-            for(int j=0;j<8;j++){
+    public void printboard() {
+        for (int i = 7; i >= 0; i--) {
+            System.out.print((i + 1) + "| ");
+            for (int j = 0; j < 8; j++) {
                 System.out.print(board[i][j].getName() + " ");
             }
             System.out.println();
         }
+        System.out.println("  ----------------");
+        System.out.println("   A B C D E F G H  ");
     }
     
     public static void main(String[] args){
