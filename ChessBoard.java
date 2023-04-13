@@ -78,15 +78,27 @@ public class ChessBoard {
     }
 
     public void setMove(String start, String end){
-         Square str = this.getSqareFromNotation(start);
-         Square en = this.getSqareFromNotation(end);
-         if(!str.getPiece().canMove(this,str,en)){
-            System.out.println("Cannot move");
-            return;
-         }
+        Square str = this.getSqareFromNotation(start);
+        Square en = this.getSqareFromNotation(end);
+        if (str != null && en != null) {
+            if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
+                System.out.println("Invalid move!");
+                return;
+            }
+            if(str.getPiece() == null){
+                System.out.println("No piece on starting square!");
+                return;
+            }
+            if(!str.getPiece().canMove(this, str, en)){
+                System.out.println("Invalid move!");
+                return;
+            }
             en.setPiece(str.getPiece());
             str.setPiece(null);
-    } 
+        } else {
+            System.out.println("Invalid move!");
+        }
+    }
 
     public Square getSqareFromNotation(String not){
         char first = not.charAt(0);
@@ -141,7 +153,7 @@ public class ChessBoard {
         chessBoard.setMove("d7","d6");
         chessBoard.setMove("c8","g4");
         chessBoard.setMove("g4","e2");
-        //chessBoard.setMove("g4","a10");
+        chessBoard.setMove("h2","a10");
         System.out.println();
         chessBoard.printboard();
     }
