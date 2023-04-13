@@ -32,5 +32,5 @@ public abstract class Piece {
         return this.name;
     }
 
-    //public abstract boolean canMove(Board board, Squere start, Square end);
+    public abstract boolean canMove(ChessBoard board, Square start, Square end);
 }

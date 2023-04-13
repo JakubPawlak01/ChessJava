@@ -195,9 +195,41 @@ public class ChessBoard {
         System.out.println("  ----------------");
         System.out.println("   A B C D E F G H  ");
     }
+
+    public Square getSquare(int x, int y) {
+        if (x < 0 || x > 7 || y < 0 || y > 7) {
+            return null; // Return null if x or y is out of range
+        }
+        return board[x][y];
+    }
+
+    public Piece getPiece(Square square) {
+        int row = square.getX();
+        int col = square.getY();
+        return board[row][col].getPiece();
+    }
+
+    public Square getSquare(String position) {
+        int row = 8 - Character.getNumericValue(position.charAt(1)); // zamienia numer wiersza na indeks tablicy board
+        int col = (int)position.charAt(0) - (int)'a'; // zamienia literę kolumny na indeks tablicy board
+        return board[row][col];
+    }
+
+    public void setMove(Square start, Square end){
+        //if(!start.getPiece().canMove(this, start, end)){
+        //    System.out.println("cannot move");
+        //}
+        //else{
+            end.setPiece(start.getPiece());
+            start.setPiece(null);
+        
+    }
     
     public static void main(String[] args){
         ChessBoard chessBoard = new ChessBoard();
+        chessBoard.printboard();
+        chessBoard.setMove(chessBoard.getSquare("a2"),  chessBoard.getSquare("a4"));
+        System.out.println();
         chessBoard.printboard();
     }
 };
