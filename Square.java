@@ -2,13 +2,11 @@ public class Square {
     public Piece piece;
     public int x;
     public int y;
-    String name;
 
-    public Square(int x, int y, Piece piece, String name) {
+    public Square(int x, int y, Piece piece) {
         this.setPiece(piece);
         this.setX(x);
         this.setY(y);
-        this.setName(name);
     }
 
     public Piece getPiece() {
@@ -38,10 +36,6 @@ public class Square {
     public void setY(int y)
     {
         this.y = y;
-    }
-
-    public void setName(String name){
-        this.name = name;
     }
 
     public String getName(){
