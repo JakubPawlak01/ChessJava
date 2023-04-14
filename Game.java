@@ -21,7 +21,6 @@ public class Game{
             System.out.println("Koniec");
             String end = scanner.nextLine();
 
-
             if(whiteTurn && board.getSqareFromNotation(start).getPiece().isWhite()){
                 if(board.setMove(start, end)){
                     whiteTurn = !whiteTurn;
