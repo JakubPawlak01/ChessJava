@@ -1,5 +1,6 @@
 public class ChessBoard {
     Square[][] board;
+
     public ChessBoard(){
         board = new Square[8][8];
 
@@ -47,15 +48,15 @@ public class ChessBoard {
     }
 
     public void printboard() {
-        for (int i = 7; i >= 0; i--) {
-            System.out.print((i + 1) + "| ");
+        for (int i = 0; i < 8; i++) {
+            System.out.print(8 - i +"| ");
             for (int j = 0; j < 8; j++) {
                 System.out.print(board[i][j].getName() + " ");
             }
             System.out.println();
         }
         System.out.println("  ----------------");
-        System.out.println("   A B C D E F G H  ");
+        System.out.println("   A B C D E F G H");
     }
 
     public Square getSquare(int x, int y) {
@@ -71,32 +72,28 @@ public class ChessBoard {
         return board[row][col].getPiece();
     }
 
-    public Square getSquare(String position) {
-        int col = 8 - Character.getNumericValue(position.charAt(1)); // zamienia numer wiersza na indeks tablicy board
-        int row = (int)position.charAt(0) - (int)'a'; // zamienia literę kolumny na indeks tablicy board
-        return board[row][col];
-    }
 
-    public void setMove(String start, String end){
+    public boolean setMove(String start, String end){
         Square str = this.getSqareFromNotation(start);
         Square en = this.getSqareFromNotation(end);
         if (str != null && en != null) {
             if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
                 System.out.println("Invalid move!");
-                return;
+                return false;
             }
             if(str.getPiece() == null){
                 System.out.println("No piece on starting square!");
-                return;
+                return false;
             }
             if(!str.getPiece().canMove(this, str, en)){
                 System.out.println("Invalid move!");
-                return;
+                return false;
             }
             en.setPiece(str.getPiece());
             str.setPiece(null);
+            return true;
         } else {
-            System.out.println("Invalid move!");
+            return false;
         }
     }
 
@@ -125,36 +122,24 @@ public class ChessBoard {
         }
         switch(second){
             case '1':
-                two = 0; break;
-            case '2':
-                two = 1; break;
-            case '3':
-                two = 2; break;
-            case '4':
-                two = 3; break;
-            case '5':
-                two = 4; break;
-            case '6':
-                two = 5; break;
-            case '7':
-                two = 6; break;
-            case '8':
                 two = 7; break;
+            case '2':
+                two = 6; break;
+            case '3':
+                two = 5; break;
+            case '4':
+                two = 4; break;
+            case '5':
+                two = 3; break;
+            case '6':
+                two = 2; break;
+            case '7':
+                two = 1; break;
+            case '8':
+                two = 0; break;
         }
         return this.board[two][one];
     }
     
-    public static void main(String[] args){
-        ChessBoard chessBoard = new ChessBoard();
-        chessBoard.printboard();
-        chessBoard.setMove("b8","c6");
-        chessBoard.setMove("c2","c4");
-        chessBoard.setMove("d2","d3");
-        chessBoard.setMove("d7","d6");
-        chessBoard.setMove("c8","g4");
-        chessBoard.setMove("g4","e2");
-        chessBoard.setMove("h2","a10");
-        System.out.println();
-        chessBoard.printboard();
-    }
+    
 };
