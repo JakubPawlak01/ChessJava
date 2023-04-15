@@ -1,5 +1,6 @@
 public class ChessBoard {
     Square[][] board;
+    public boolean whiteTurn = true;
 
     public ChessBoard(){
         board = new Square[8][8];
@@ -76,6 +77,7 @@ public class ChessBoard {
     public boolean setMove(String start, String end){
         Square str = this.getSqareFromNotation(start);
         Square en = this.getSqareFromNotation(end);
+
         if (str != null && en != null) {
             if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
                 System.out.println("Invalid move!");
@@ -89,8 +91,17 @@ public class ChessBoard {
                 System.out.println("Invalid move!");
                 return false;
             }
+            
             en.setPiece(str.getPiece());
             str.setPiece(null);
+            Square kingSquare = this.findKing(whiteTurn);
+            if(this.isKingInCheck(kingSquare, whiteTurn)){
+                str.setPiece(en.getPiece());
+                en.setPiece(null);
+                System.out.println("Invalid move!");
+                return false;
+            }
+            whiteTurn = !whiteTurn;
             return true;
         } else {
             return false;
@@ -141,5 +152,72 @@ public class ChessBoard {
         return this.board[two][one];
     }
     
+    public Square findKing(boolean isWhite){
+        for(int i=0; i<8; i++){
+            for(int j=0; j<8; j++){
+                Square square = getSquare(i, j);
+                if(square.getPiece() instanceof King && square.getPiece().isWhite() == isWhite){
+                    return square;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean isKingInCheck(Square king, boolean isWhite){
+         for(int i=0; i<8; i++){
+            for(int j=0; j<8; j++){
+                Square square = getSquare(i, j);
+                Piece piece = square.getPiece();
+                if (piece != null && piece.isWhite() != isWhite && piece.canMove(this, square, king)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     
+    public boolean isCheckMate(boolean white) {
+        Square kingSquare = findKing(white);
+    
+        // Check if king is in check
+        if (!isKingInCheck(kingSquare, white)) {
+            return false;
+        }
+    
+        // Check if king can move out of check
+        for (int row = -1; row <= 1; row++) {
+            for (int col = -1; col <= 1; col++) {
+                if (row == 0 && col == 0) {
+                    continue; // Skip current square
+                }
+                int newRow = kingSquare.getX() + row;
+                int newCol = kingSquare.getY() + col;
+                Square newSquare = getSquare(newRow, newCol);
+                if (newSquare != null && (newSquare.getPiece() == null || newSquare.getPiece().isWhite() != white) && !isKingInCheck(newSquare, white)) {
+                    return false; // King can move out of check
+                }
+            }
+        }
+    
+        // Check if any other piece can block the attack
+        //for (int i = 0; i < 8; i++) {
+        //    for (int j = 0; j < 8; j++) {
+        //        Square square = getSquare(i, j);
+        //        Piece piece = getPiece(square);
+        //        if (piece != null && piece.isWhite() == white) {
+        //            for (int row = 0; row < 8; row++) {
+        //                for (int col = 0; col < 8; col++) {
+        //                    Square targetSquare = getSquare(row, col);
+        //                    if (piece.canMove(this, square, targetSquare) && !isKingInCheck(targetSquare, white)) {
+        //                        return false; // Piece can block the attack
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+    
+        return true; // King is in checkmate
+    }
 };

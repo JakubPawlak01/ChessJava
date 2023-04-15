@@ -15,11 +15,27 @@ public class Game{
         while(true){
             board.printboard();
             String turnColor = whiteTurn ? "białych" : "czarnych";
+
+            Square kingSquare = board.findKing(whiteTurn);
+            if(board.isKingInCheck(kingSquare, whiteTurn)){
+                System.out.println("Szach!");
+            }
+
+            //if(board.isCheckMate(whiteTurn)){
+            //    System.out.println("Dick2");
+            //    break;
+            //}
+            
             System.out.println("Teraz ruch " + turnColor);
-            System.out.println("Początek");
+            System.out.println("Podaj pole początowe:");
             String start = scanner.nextLine();
-            System.out.println("Koniec");
+            System.out.println("Podaj pole końcowe:");
             String end = scanner.nextLine();
+
+            if(start.equals("") || end.equals("")){
+                System.out.println("Musisz podać ruch!");
+                continue;
+            }
 
             if(whiteTurn && board.getSqareFromNotation(start).getPiece().isWhite()){
                 if(board.setMove(start, end)){
