@@ -21,10 +21,14 @@ public class Game{
                 System.out.println("Szach!");
             }
 
-            //if(board.isCheckMate(whiteTurn)){
-            //    System.out.println("Dick2");
-            //    break;
-            //}
+            if(board.isCheckMate(whiteTurn)){
+            System.out.println("Koniec Gry! Szach mat!");
+                break;
+            }
+            if(board.isCheckMate(!whiteTurn)){
+                System.out.println("Koniec Gry! Szach mat!");
+                    break;
+            }
             
             System.out.println("Teraz ruch " + turnColor);
             System.out.println("Podaj pole początowe:");

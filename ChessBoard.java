@@ -80,6 +80,41 @@ public class ChessBoard {
 
         if (str != null && en != null) {
             if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
+                //System.out.println("Invalid move!");
+                return false;
+            }
+            if(str.getPiece() == null){
+                System.out.println("No piece on starting square!");
+                return false;
+            }
+            if(!str.getPiece().canMove(this, str, en)){
+                //System.out.println("Invalid move!");
+                return false;
+            }
+            Piece p1 = str.getPiece();
+            Piece p2 = en.getPiece();
+            en.setPiece(str.getPiece());
+            str.setPiece(null);
+            Square kingSquare = this.findKing(whiteTurn);
+            if(this.isKingInCheck(kingSquare, whiteTurn)){
+                str.setPiece(p1);
+                en.setPiece(p2);
+                System.out.println("Invalid move!");
+                return false;
+            }
+            whiteTurn = !whiteTurn;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean setMove(Square start, Square end){
+        Square str = start;
+        Square en = end;
+
+        if (str != null && en != null) {
+            if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
                 System.out.println("Invalid move!");
                 return false;
             }
@@ -193,30 +228,41 @@ public class ChessBoard {
                 }
                 int newRow = kingSquare.getX() + row;
                 int newCol = kingSquare.getY() + col;
-                Square newSquare = getSquare(newRow, newCol);
-                if (newSquare != null && (newSquare.getPiece() == null || newSquare.getPiece().isWhite() != white) && !isKingInCheck(newSquare, white)) {
-                    return false; // King can move out of check
+                if(newRow >= 0 && newCol >= 0 && newRow <= 7 && newCol <= 7){
+                    Square newSquare = getSquare(newRow, newCol);
+                    newSquare.getPiece().setWhite(!white);
+                    if ((newSquare.getPiece() == null && !isKingInCheck(newSquare, white)) || (newSquare.getPiece() != null && newSquare.getPiece().isWhite() == white && !isKingInCheck(newSquare, white))) {
+                        return false; // King can move out of check
+                    }
+                }
+                else{
+                    continue;
                 }
             }
         }
     
         // Check if any other piece can block the attack
-        //for (int i = 0; i < 8; i++) {
-        //    for (int j = 0; j < 8; j++) {
-        //        Square square = getSquare(i, j);
-        //        Piece piece = getPiece(square);
-        //        if (piece != null && piece.isWhite() == white) {
-        //            for (int row = 0; row < 8; row++) {
-        //                for (int col = 0; col < 8; col++) {
-        //                    Square targetSquare = getSquare(row, col);
-        //                    if (piece.canMove(this, square, targetSquare) && !isKingInCheck(targetSquare, white)) {
-        //                        return false; // Piece can block the attack
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Square square = getSquare(i, j);
+                Piece piece = getPiece(square);
+                if (piece != null && piece.isWhite() == white) {
+                    for (int row = 0; row < 8; row++) {
+                        for (int col = 0; col < 8; col++) {
+                            Square targetSquare = getSquare(row, col);
+                            if (piece.canMove(this, square, targetSquare)) {
+                                if(this.setMove(square, targetSquare)){
+                                    if(!this.isKingInCheck(kingSquare, white)){
+                                        this.setMove(targetSquare, square);
+                                        return false; // Piece can block the attack
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     
         return true; // King is in checkmate
     }
