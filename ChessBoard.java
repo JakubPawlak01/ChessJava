@@ -1,9 +1,11 @@
 public class ChessBoard {
     Square[][] board;
     public boolean whiteTurn = true;
+    public Checker check;
 
     public ChessBoard(){
         board = new Square[8][8];
+        check = new Checker();
 
         board[0][0] = new Square(0, 0, new Rook(false,"R"));
         board[0][1] = new Square(0, 1, new Knight(false,"N"));
@@ -80,7 +82,7 @@ public class ChessBoard {
 
         if (str != null && en != null) {
             if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
-                //System.out.println("Invalid move!");
+                System.out.println("Invalid move!1");
                 return false;
             }
             if(str.getPiece() == null){
@@ -88,20 +90,15 @@ public class ChessBoard {
                 return false;
             }
             if(!str.getPiece().canMove(this, str, en)){
-                //System.out.println("Invalid move!");
+                System.out.println("Invalid move!2");
                 return false;
             }
-            Piece p1 = str.getPiece();
-            Piece p2 = en.getPiece();
+            if(check.isCheckAfterMove(this, str, en, whiteTurn)){
+                System.out.println("Invalid move!3");
+                return false;
+            }
             en.setPiece(str.getPiece());
             str.setPiece(null);
-            Square kingSquare = this.findKing(whiteTurn);
-            if(this.isKingInCheck(kingSquare, whiteTurn)){
-                str.setPiece(p1);
-                en.setPiece(p2);
-                System.out.println("Invalid move!");
-                return false;
-            }
             whiteTurn = !whiteTurn;
             return true;
         } else {
@@ -115,7 +112,7 @@ public class ChessBoard {
 
         if (str != null && en != null) {
             if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
-                System.out.println("Invalid move!");
+                System.out.println("Invalid move!1");
                 return false;
             }
             if(str.getPiece() == null){
@@ -123,19 +120,15 @@ public class ChessBoard {
                 return false;
             }
             if(!str.getPiece().canMove(this, str, en)){
-                System.out.println("Invalid move!");
+                System.out.println("Invalid move!2");
                 return false;
             }
-            
+            if(check.isCheckAfterMove(this, str, en, whiteTurn)){
+                System.out.println("Invalid move!3");
+                return false;
+            }
             en.setPiece(str.getPiece());
             str.setPiece(null);
-            Square kingSquare = this.findKing(whiteTurn);
-            if(this.isKingInCheck(kingSquare, whiteTurn)){
-                str.setPiece(en.getPiece());
-                en.setPiece(null);
-                System.out.println("Invalid move!");
-                return false;
-            }
             whiteTurn = !whiteTurn;
             return true;
         } else {
@@ -230,7 +223,9 @@ public class ChessBoard {
                 int newCol = kingSquare.getY() + col;
                 if(newRow >= 0 && newCol >= 0 && newRow <= 7 && newCol <= 7){
                     Square newSquare = getSquare(newRow, newCol);
-                    newSquare.getPiece().setWhite(!white);
+                    if(newSquare.getPiece() != null){
+                        newSquare.getPiece().setWhite(!white);
+                    }
                     if ((newSquare.getPiece() == null && !isKingInCheck(newSquare, white)) || (newSquare.getPiece() != null && newSquare.getPiece().isWhite() == white && !isKingInCheck(newSquare, white))) {
                         return false; // King can move out of check
                     }
@@ -250,7 +245,7 @@ public class ChessBoard {
                     for (int row = 0; row < 8; row++) {
                         for (int col = 0; col < 8; col++) {
                             Square targetSquare = getSquare(row, col);
-                            if (piece.canMove(this, square, targetSquare)) {
+                            if (piece != null && piece.canMove(this, square, targetSquare)) {
                                 if(this.setMove(square, targetSquare)){
                                     if(!this.isKingInCheck(kingSquare, white)){
                                         this.setMove(targetSquare, square);

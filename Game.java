@@ -2,11 +2,13 @@ import java.util.Scanner;
 
 public class Game{
     public ChessBoard board;
+    public Checker check;
     Scanner scanner;
     boolean whiteTurn;
 
     public Game(){
         this.board = new ChessBoard();
+        this.check = new Checker();
         scanner = new Scanner(System.in);
         this.whiteTurn = true;
     }
@@ -14,22 +16,14 @@ public class Game{
     public void start(){
         while(true){
             board.printboard();
-            String turnColor = whiteTurn ? "białych" : "czarnych";
-
-            Square kingSquare = board.findKing(whiteTurn);
-            if(board.isKingInCheck(kingSquare, whiteTurn)){
+            if(check.isCheck(board, whiteTurn)){
                 System.out.println("Szach!");
             }
-
-            if(board.isCheckMate(whiteTurn)){
-            System.out.println("Koniec Gry! Szach mat!");
+            if(check.isCheckMate(board, whiteTurn)){
+                System.out.println("Mat!");
                 break;
             }
-            if(board.isCheckMate(!whiteTurn)){
-                System.out.println("Koniec Gry! Szach mat!");
-                    break;
-            }
-            
+            String turnColor = whiteTurn ? "białych" : "czarnych";
             System.out.println("Teraz ruch " + turnColor);
             System.out.println("Podaj pole początowe:");
             String start = scanner.nextLine();

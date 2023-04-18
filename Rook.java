@@ -38,7 +38,9 @@ public class Rook extends Piece{
             y += yDiff;
         }
 
-        // Return true if there is no piece in the way and the end square is not occupied by a piece of the same color
-        return end.getPiece() == null || end.getPiece().isWhite() != start.getPiece().isWhite();
+        if(end.getPiece() == null || end.getPiece().isWhite() != start.getPiece().isWhite()){
+            return true;
+        }
+        return false;
     }
 }
