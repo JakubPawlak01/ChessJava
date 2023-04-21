@@ -79,6 +79,32 @@ public class Checker {
         return true;
     }
 
+    public boolean isPat(ChessBoard chessboard, Boolean WhiteTurn){
+        if(isCheck(chessboard, WhiteTurn)){
+            return false;
+        }
+
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                Square startSquare  = chessboard.board[i][j];
+                Piece startPiece  = startSquare.getPiece();
+                if(startPiece != null && startPiece.isWhite() == WhiteTurn){
+                    for(int k = 0; k < 8; k++){
+                        for(int l = 0; l < 8; l++){
+                            Square endSquare = chessboard.board[k][l];
+                            if(startSquare != null && startPiece.canMove(chessboard, startSquare, endSquare)){
+                                if(!isCheckAfterMove(chessboard, startSquare, endSquare, WhiteTurn)){
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean isCheckAfterMove(ChessBoard chessboard, Square startSquare, Square endSquare, Boolean WhiteTurn){
         ChessBoard chessboard2 = new ChessBoard();
         for(int i = 0; i < 8; i++){

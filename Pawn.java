@@ -17,53 +17,41 @@ public class Pawn extends Piece{
         int startY = start.getY();
         int endX = end.getX();
         int endY = end.getY();
+        int diffX = Math.abs(startX - endX);
+        int diffY = Math.abs(startY - endY);
 
-        // Sprawdzenie, czy na polu początkowym znajduje się pionek
-        if (start.getPiece() == null || !(start.getPiece() instanceof Pawn)) {
+        if(diffX > 2 || diffY > 1){
             return false;
         }
 
-        // Sprawdzenie, czy pole końcowe jest puste
-        if (end.getPiece() != null) {
+        if (start.getPiece().isWhite() && end.getX() > start.getX()) {
+            return false;
+        } else if (!start.getPiece().isWhite() && end.getX() < start.getX()) {
+            return false;
+        }
+        
+        if((diffX == 1 && diffY == 1 && end.getPiece() == null) || diffY >= 1 && diffX == 0){
             return false;
         }
 
-        // Sprawdzenie, czy pionek porusza się o jedno pole do przodu
-        if (Math.abs(startX - endX) == 1 && Math.abs(startY - endY) == 1) {
-            // Sprawdzenie, czy na polu końcowym znajduje się figura przeciwnika
-            if (end.getPiece() != null && end.getPiece().isWhite() != this.isWhite()) {
-                return true;
-            }
-        } else if (startY != endY) {
-            // Pionek może poruszać się tylko na ukos, aby bić figury przeciwnika
-            return false;
-        } else if (this.isWhite()) {
-            if (startX == 6 && endX == 4) {
-                // Sprawdzenie, czy pionek porusza się o dwa pola do przodu z pola startowego
-                // oraz czy pola między polem startowym a końcowym są puste
-                if (board.getSquare(5, startY).getPiece() == null && end.getPiece() == null) {
-                    return true;
-                }
-            } else if (startX - endX == 1) {
-                // Sprawdzenie, czy pionek porusza się o jedno pole do przodu
-                if (end.getPiece() == null) {
-                    return true;
-                }
-            }
-        } else {
-            if (startX == 1 && endX == 3) {
-                // Sprawdzenie, czy pionek porusza się o dwa pola do przodu z pola startowego
-                // oraz czy pola między polem startowym a końcowym są puste
-                if (board.getSquare(2, startY).getPiece() == null && end.getPiece() == null) {
-                    return true;
-                }
-            } else if (endX - startX == 1) {
-                // Sprawdzenie, czy pionek porusza się o jedno pole do przodu
-                if (end.getPiece() == null) {
+        if(diffX == 2 && startX == 6 || startX == 1){
+            {
+                int xDir = (end.getX() > start.getX()) ? 1 : -1;
+                Square diffSquare = board.board[startX + xDir][startY];
+                if(diffSquare.getPiece() == null && end.getPiece() == null){
                     return true;
                 }
             }
         }
+
+        if(diffX == 1 && end.getPiece() == null){
+            return true;
+        }
+
+        if(diffX == 1 && diffY == 1 && end.getPiece() != null && start.getPiece().isWhite() != end.getPiece().isWhite()){
+            return true;
+        }
+        
         return false;
     }
 }

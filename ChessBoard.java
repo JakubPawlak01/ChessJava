@@ -1,11 +1,21 @@
 public class ChessBoard {
     Square[][] board;
+    Piece[] whiteDead;
+    Piece[] blackDead;
     public boolean whiteTurn = true;
     public Checker check;
+    int w = 0;
+    int b = 0;
 
     public ChessBoard(){
-        board = new Square[8][8];
         check = new Checker();
+        whiteDead = new Piece[7];
+        blackDead = new Piece[7];
+        for(int i = 0; i < 7; i++) {
+            whiteDead[i] = null;
+            blackDead[i] = null;
+        }
+        board = new Square[8][8];
 
         board[0][0] = new Square(0, 0, new Rook(false,"R"));
         board[0][1] = new Square(0, 1, new Knight(false,"N"));
@@ -62,6 +72,22 @@ public class ChessBoard {
         System.out.println("   A B C D E F G H");
     }
 
+    public void printwhiteDead(){
+        for (int i = 0; i < 7; i++) {
+            if(whiteDead[i] != null){
+                System.out.println(i+1+" "+whiteDead[i].getPieceName());
+            }
+        }
+    }
+    
+    public void printblackDead(){
+        for (int i = 0; i < 7; i++) {
+            if(blackDead[i] != null){
+                System.out.println(i+1+" "+blackDead[i].getPieceName());
+            }
+        }
+    }  
+
     public Square getSquare(int x, int y) {
         if (x < 0 || x > 7 || y < 0 || y > 7) {
             return null; // Return null if x or y is out of range
@@ -97,6 +123,18 @@ public class ChessBoard {
                 System.out.println("Invalid move!3");
                 return false;
             }
+            if(en.getPiece() != null){
+                if(en.getPiece() instanceof Pawn){
+                }
+                else{
+                    if(en.getPiece().isWhite() == true){
+                        whiteDead[w++] = en.getPiece();
+                    }
+                    else{
+                        blackDead[b++] = en.getPiece();
+                    }
+                }
+            }
             en.setPiece(str.getPiece());
             str.setPiece(null);
             whiteTurn = !whiteTurn;
@@ -126,6 +164,19 @@ public class ChessBoard {
             if(check.isCheckAfterMove(this, str, en, whiteTurn)){
                 System.out.println("Invalid move!3");
                 return false;
+            }
+            if(en.getPiece() != null){
+                en.getPiece().setAlive(false);
+                if(en.getPiece() instanceof Pawn){
+                }
+                else{
+                    if(en.getPiece().isWhite() == true){
+                        whiteDead[w++] = en.getPiece();
+                    }
+                    else{
+                        blackDead[b++] = en.getPiece();
+                    }
+                }
             }
             en.setPiece(str.getPiece());
             str.setPiece(null);
@@ -178,87 +229,5 @@ public class ChessBoard {
                 two = 0; break;
         }
         return this.board[two][one];
-    }
-    
-    public Square findKing(boolean isWhite){
-        for(int i=0; i<8; i++){
-            for(int j=0; j<8; j++){
-                Square square = getSquare(i, j);
-                if(square.getPiece() instanceof King && square.getPiece().isWhite() == isWhite){
-                    return square;
-                }
-            }
-        }
-        return null;
-    }
-
-    public boolean isKingInCheck(Square king, boolean isWhite){
-         for(int i=0; i<8; i++){
-            for(int j=0; j<8; j++){
-                Square square = getSquare(i, j);
-                Piece piece = square.getPiece();
-                if (piece != null && piece.isWhite() != isWhite && piece.canMove(this, square, king)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    
-    public boolean isCheckMate(boolean white) {
-        Square kingSquare = findKing(white);
-    
-        // Check if king is in check
-        if (!isKingInCheck(kingSquare, white)) {
-            return false;
-        }
-    
-        // Check if king can move out of check
-        for (int row = -1; row <= 1; row++) {
-            for (int col = -1; col <= 1; col++) {
-                if (row == 0 && col == 0) {
-                    continue; // Skip current square
-                }
-                int newRow = kingSquare.getX() + row;
-                int newCol = kingSquare.getY() + col;
-                if(newRow >= 0 && newCol >= 0 && newRow <= 7 && newCol <= 7){
-                    Square newSquare = getSquare(newRow, newCol);
-                    if(newSquare.getPiece() != null){
-                        newSquare.getPiece().setWhite(!white);
-                    }
-                    if ((newSquare.getPiece() == null && !isKingInCheck(newSquare, white)) || (newSquare.getPiece() != null && newSquare.getPiece().isWhite() == white && !isKingInCheck(newSquare, white))) {
-                        return false; // King can move out of check
-                    }
-                }
-                else{
-                    continue;
-                }
-            }
-        }
-    
-        // Check if any other piece can block the attack
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Square square = getSquare(i, j);
-                Piece piece = getPiece(square);
-                if (piece != null && piece.isWhite() == white) {
-                    for (int row = 0; row < 8; row++) {
-                        for (int col = 0; col < 8; col++) {
-                            Square targetSquare = getSquare(row, col);
-                            if (piece != null && piece.canMove(this, square, targetSquare)) {
-                                if(this.setMove(square, targetSquare)){
-                                    if(!this.isKingInCheck(kingSquare, white)){
-                                        this.setMove(targetSquare, square);
-                                        return false; // Piece can block the attack
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    
-        return true; // King is in checkmate
     }
 };
