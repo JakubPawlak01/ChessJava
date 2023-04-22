@@ -21,23 +21,23 @@ public class ChessBoard {
         }
         board = new Square[8][8];
 
-        board[0][0] = new Square(0, 0, new Rook(false,"R"));
-        board[0][1] = new Square(0, 1, new Knight(false,"N"));
-        board[0][2] = new Square(0, 2, new Bishop(false,"B"));
-        board[0][3] = new Square(0, 3, new Queen(false,"Q"));
-        board[0][4] = new Square(0, 4, new King(false,"K"));
-        board[0][5] = new Square(0, 5, new Bishop(false,"B"));
-        board[0][6] = new Square(0, 6, new Knight(false,"N"));
-        board[0][7] = new Square(0, 7, new Rook(false,"R"));
+        board[0][0] = new Square(0, 0, new Rook(false,"\u001B[31mR\u001B[0m"));
+        board[0][1] = new Square(0, 1, new Knight(false,"\u001B[31mN\u001B[0m"));
+        board[0][2] = new Square(0, 2, new Bishop(false,"\u001B[31mB\u001B[0m"));
+        board[0][3] = new Square(0, 3, new Queen(false,"\u001B[31mQ\u001B[0m"));
+        board[0][4] = new Square(0, 4, new King(false,"\u001B[31mK\u001B[0m"));
+        board[0][5] = new Square(0, 5, new Bishop(false,"\u001B[31mB\u001B[0m"));
+        board[0][6] = new Square(0, 6, new Knight(false,"\u001B[31mN\u001B[0m"));
+        board[0][7] = new Square(0, 7, new Rook(false,"\u001B[31mR\u001B[0m"));
 
-        board[1][0] = new Square(1, 0, new Pawn(false,"p"));
-        board[1][1] = new Square(1, 1, new Pawn(false,"p"));
-        board[1][2] = new Square(1, 2, new Pawn(false,"p"));
-        board[1][3] = new Square(1, 3, new Pawn(false,"p"));
-        board[1][4] = new Square(1, 4, new Pawn(false,"p"));
-        board[1][5] = new Square(1, 5, new Pawn(false,"p"));
-        board[1][6] = new Square(1, 6, new Pawn(false,"p"));
-        board[1][7] = new Square(1, 7, new Pawn(false,"p"));
+        board[1][0] = new Square(1, 0, new Pawn(false,"\u001B[31mP\u001B[0m"));
+        board[1][1] = new Square(1, 1, new Pawn(false,"\u001B[31mP\u001B[0m"));
+        board[1][2] = new Square(1, 2, new Pawn(false,"\u001B[31mP\u001B[0m"));
+        board[1][3] = new Square(1, 3, new Pawn(false,"\u001B[31mP\u001B[0m"));
+        board[1][4] = new Square(1, 4, new Pawn(false,"\u001B[31mP\u001B[0m"));
+        board[1][5] = new Square(1, 5, new Pawn(false,"\u001B[31mP\u001B[0m"));
+        board[1][6] = new Square(1, 6, new Pawn(false,"\u001B[31mP\u001B[0m"));
+        board[1][7] = new Square(1, 7, new Pawn(false,"\u001B[31mP\u001B[0m"));
 
         board[6][0] = new Square(6, 0, new Pawn(true,"P"));
         board[6][1] = new Square(6, 1, new Pawn(true,"P"));
