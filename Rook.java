@@ -3,27 +3,22 @@ public class Rook extends Piece{
         super(white, name);
     }
     public boolean canMove(ChessBoard board, Square start, Square end) {
-        // Sprawdź, czy ruch nie wykracza poza granice szachownicy
         if (end.getX() < 0 || end.getX() > 7 || end.getY() < 0 || end.getY() > 7) {
             return false;
         }
 
-        // Sprawdź, czy ruch nie jest wykonywany na to samo pole
         if (start.getX() == end.getX() && start.getY() == end.getY()) {
             return false;
         }
 
-        // Make sure the start and end squares are different
         if (start == end) {
             return false;
         }
 
-        // Make sure the end square is on the same row or column as the start square
         if (start.getX() != end.getX() && start.getY() != end.getY()) {
             return false;
         }
 
-        // Check for any pieces in the way
         int xDiff = Integer.compare(end.getX(), start.getX());
         int yDiff = Integer.compare(end.getY(), start.getY());
 

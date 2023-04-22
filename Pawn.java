@@ -1,15 +1,16 @@
+import java.util.Scanner;
 public class Pawn extends Piece{
+    Scanner scanner;
     public Pawn(boolean white, String name){
         super(white, name);
+        scanner = new Scanner(System.in);
     }
 
     public boolean canMove(ChessBoard board, Square start, Square end) {
-        // Sprawdź, czy ruch nie wykracza poza granice szachownicy
         if (end.getX() < 0 || end.getX() > 7 || end.getY() < 0 || end.getY() > 7) {
             return false;
         }
 
-        // Sprawdź, czy ruch nie jest wykonywany na to samo pole
         if (start.getX() == end.getX() && start.getY() == end.getY()) {
             return false;
         }

@@ -1,13 +1,17 @@
+import java.util.Scanner;
+
 public class ChessBoard {
     Square[][] board;
     Piece[] whiteDead;
     Piece[] blackDead;
     public boolean whiteTurn = true;
     public Checker check;
+    Scanner scanner;
     int w = 0;
     int b = 0;
 
     public ChessBoard(){
+        scanner = new Scanner(System.in);
         check = new Checker();
         whiteDead = new Piece[7];
         blackDead = new Piece[7];
@@ -137,6 +141,7 @@ public class ChessBoard {
             }
             en.setPiece(str.getPiece());
             str.setPiece(null);
+            promotion(en);
             whiteTurn = !whiteTurn;
             return true;
         } else {
@@ -166,7 +171,6 @@ public class ChessBoard {
                 return false;
             }
             if(en.getPiece() != null){
-                en.getPiece().setAlive(false);
                 if(en.getPiece() instanceof Pawn){
                 }
                 else{
@@ -180,6 +184,7 @@ public class ChessBoard {
             }
             en.setPiece(str.getPiece());
             str.setPiece(null);
+            promotion(end);
             whiteTurn = !whiteTurn;
             return true;
         } else {
@@ -209,6 +214,8 @@ public class ChessBoard {
                 one = 6; break;
             case 'h':
                 one = 7; break;
+            default:
+                System.out.println("Zła literka"); break;
         }
         switch(second){
             case '1':
@@ -227,7 +234,52 @@ public class ChessBoard {
                 two = 1; break;
             case '8':
                 two = 0; break;
+            default:
+                System.out.println("Zła cyferka"); break;
         }
         return this.board[two][one];
+    }
+    
+    public void promotion(Square end){
+        if(end.getPiece() instanceof Pawn && end.getPiece().isWhite() == true && end.getX() == 0){
+            printwhiteDead();
+            System.out.println("Podaj na jaka figure chcesz zamienić piona: ");
+            int choice = scanner.nextInt();
+            if(whiteDead[choice-1] != null){
+                end.setPiece(whiteDead[choice-1]);
+                whiteDead[choice-1] = null;
+                sortTable(whiteDead);
+                w--;
+            }
+        }
+        else if(end.getPiece() instanceof Pawn && end.getPiece().isWhite() == false && end.getX() == 7){
+            printblackDead();
+            System.out.println("Podaj na jaka figure chcesz zamienić piona: ");
+            int choice = scanner.nextInt();
+            if(blackDead[choice-1] != null){
+                end.setPiece(blackDead[choice-1]);
+                blackDead[choice-1] = null;
+                sortTable(whiteDead);
+                b--;
+            }
+        }
+        else{
+            System.out.println("Jeszcze nie czas");
+        }
+        
+    }
+
+    public void sortTable(Piece[] table){
+        for(int i=0; i<table.length; i++){
+            if(table[i] == null){
+                for(int j = i + 1; j < table.length; j++){
+                    if(table[j] != null){
+                        table[i] = table[j];
+                        table[j] = null;
+                        break;
+                    }
+                }
+            }
+        }
     }
 };
