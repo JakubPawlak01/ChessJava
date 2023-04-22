@@ -1,5 +1,5 @@
 public abstract class Piece {
-    public boolean alive = true;
+    public boolean firstMove = true;
     public boolean white = false;
     public String name;
 
@@ -16,12 +16,12 @@ public abstract class Piece {
         this.white = white;
     }
 
-    public boolean isAlive() {
-        return this.alive;
+    public boolean getFirstMove() {
+        return this.firstMove;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
+    public void setFirstMove() {
+        this.firstMove = false;
     }
 
     public void setName(String name) {

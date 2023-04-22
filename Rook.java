@@ -1,6 +1,10 @@
 public class Rook extends Piece{
+    public boolean firstMove = true;
     public Rook(boolean white, String name){
         super(white, name);
+    }
+    public void setFirstMove(){
+        firstMove = false;
     }
     public boolean canMove(ChessBoard board, Square start, Square end) {
         if (end.getX() < 0 || end.getX() > 7 || end.getY() < 0 || end.getY() > 7) {

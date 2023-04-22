@@ -110,6 +110,14 @@ public class ChessBoard {
         Square str = this.getSqareFromNotation(start);
         Square en = this.getSqareFromNotation(end);
 
+        if(str.getPiece() instanceof King){
+            King king = (King) str.getPiece();
+            if(king.castling(this, str, en)){
+                whiteTurn = !whiteTurn;
+                return true;
+            }
+        }
+
         if (str != null && en != null) {
             if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
                 System.out.println("Invalid move!1");
@@ -141,6 +149,7 @@ public class ChessBoard {
             }
             en.setPiece(str.getPiece());
             str.setPiece(null);
+            en.getPiece().setFirstMove();
             promotion(en);
             whiteTurn = !whiteTurn;
             return true;
@@ -152,7 +161,13 @@ public class ChessBoard {
     public boolean setMove(Square start, Square end){
         Square str = start;
         Square en = end;
-
+        if(str.getPiece() instanceof King){
+            King king = (King) str.getPiece();
+            if(king.castling(this, start, end)){
+                whiteTurn = !whiteTurn;
+                return true;
+            }
+        }
         if (str != null && en != null) {
             if(str.getX() > 7 || str.getY() > 7 || en.getX() > 7 || en.getY() > 7){
                 System.out.println("Invalid move!1");
