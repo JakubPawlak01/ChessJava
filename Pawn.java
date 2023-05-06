@@ -21,6 +21,32 @@ public class Pawn extends Piece{
         int diffX = Math.abs(startX - endX);
         int diffY = Math.abs(startY - endY);
 
+        if(diffX == 1 && diffY == 1 && start.getPiece() instanceof Pawn){
+            if((start.getPiece().isWhite() == white && startX == 3) || (start.getPiece().isWhite() != true && startX == 4)){
+                if(end.getPiece() == null){
+                    if(board.lastMove[1].getY() == endY && board.lastMove[1].getPiece() instanceof Pawn){
+                        int blmsx = board.lastMove[0].getX();
+                        int blmsy = board.lastMove[0].getY();
+                        int blsex = board.lastMove[1].getX();
+                        int blsey = board.lastMove[1].getY();
+                        int difflx = Math.abs(blmsx - blsex);
+                        int diffly = Math.abs(blmsy - blsey);
+                        if(diffly == 0 && difflx == 2){
+                            if(start.getPiece().isWhite() == true && board.board[blsex][blsey].getPiece() instanceof Pawn && board.board[blsex][blsey].getPiece().isWhite() != true){
+                                board.board[blsex][blsey].setPiece(null);
+                                return true;
+                            }
+                            else if(start.getPiece().isWhite() != true && board.board[blsex][blsey].getPiece() instanceof Pawn && board.board[blsex][blsey].getPiece().isWhite() != false){
+                                board.board[blsex][blsey].setPiece(null);
+                                return true;
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+
         if(diffX > 2 || diffY > 1){
             return false;
         }
@@ -34,6 +60,8 @@ public class Pawn extends Piece{
         if((diffX == 1 && diffY == 1 && end.getPiece() == null) || diffY >= 1 && diffX == 0){
             return false;
         }
+
+        
 
         if(diffX == 2 && startX == 6 || startX == 1){
             {
@@ -52,7 +80,10 @@ public class Pawn extends Piece{
         if(diffX == 1 && diffY == 1 && end.getPiece() != null && start.getPiece().isWhite() != end.getPiece().isWhite()){
             return true;
         }
+
+        
         
         return false;
     }
+
 }

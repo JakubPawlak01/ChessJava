@@ -9,10 +9,12 @@ public class ChessBoard {
     Scanner scanner;
     int w = 0;
     int b = 0;
+    Square[] lastMove;
 
     public ChessBoard(){
         scanner = new Scanner(System.in);
         check = new Checker();
+        lastMove = new Square[2];
         whiteDead = new Piece[7];
         blackDead = new Piece[7];
         for(int i = 0; i < 7; i++) {
@@ -114,8 +116,14 @@ public class ChessBoard {
             King king = (King) str.getPiece();
             if(king.castling(this, str, en)){
                 whiteTurn = !whiteTurn;
+                lastMove[0] = str;
+                lastMove[1] = en;
                 return true;
             }
+        }
+
+        if(str.getPiece() == null){
+            return false;
         }
 
         if (str != null && en != null) {
@@ -152,6 +160,8 @@ public class ChessBoard {
             en.getPiece().setFirstMove();
             promotion(en);
             whiteTurn = !whiteTurn;
+            lastMove[0] = str;
+            lastMove[1] = en;
             return true;
         } else {
             return false;
@@ -165,6 +175,8 @@ public class ChessBoard {
             King king = (King) str.getPiece();
             if(king.castling(this, start, end)){
                 whiteTurn = !whiteTurn;
+                lastMove[0] = str;
+                lastMove[1] = en;
                 return true;
             }
         }
@@ -201,6 +213,8 @@ public class ChessBoard {
             str.setPiece(null);
             promotion(end);
             whiteTurn = !whiteTurn;
+            lastMove[0] = str;
+            lastMove[1] = en;
             return true;
         } else {
             return false;
@@ -210,6 +224,7 @@ public class ChessBoard {
     public Square getSqareFromNotation(String not){
         char first = not.charAt(0);
         char second = not.charAt(1);
+
         int one = 0;
         int two = 0;
         switch(first){
@@ -277,11 +292,7 @@ public class ChessBoard {
                 sortTable(whiteDead);
                 b--;
             }
-        }
-        else{
-            System.out.println("Jeszcze nie czas");
-        }
-        
+        }     
     }
 
     public void sortTable(Piece[] table){

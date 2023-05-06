@@ -1,25 +1,29 @@
 import java.util.Scanner;
+//import java.io.IOException;
 
 public class Game{
     public ChessBoard board;
     public Checker check;
     Scanner scanner;
     boolean whiteTurn;
+    Process proccess;
 
     public Game(){
         this.board = new ChessBoard();
         this.check = new Checker();
         scanner = new Scanner(System.in);
         this.whiteTurn = true;
+
     }
 
     public void start(){
-        String[] a = {"e2","a7","d1","a8","h5","h7","a5","a6","h2","f7","c7","e8","d7","d8","b7","d3","b8","f7","c8"};
-        String[] b = {"e3","a5","h5","a6","a5","h5","c7","h6","h4","f6","d7","f7","b7","d3","b8","h7","c8","g6","e6"};
-        int c = 0;
+        //String[] a = {"e2","a7","d1","a8","h5","h7","a5","a6","h2","f7","c7","e8","d7","d8","b7","d3","b8","f7","c8"};
+        //String[] b = {"e3","a5","h5","a6","a5","h5","c7","h6","h4","f6","d7","f7","b7","d3","b8","h7","c8","g6","e6"};
+        //int c = 0;
         while(true){
+            //System.out.print("\033[H\033[2J"); 
+
             board.printboard();
-        
             String turnColor = whiteTurn ? "białych" : "czarnych";
 
             if(check.isCheck(board, whiteTurn)){
@@ -50,17 +54,18 @@ public class Game{
             //    start = scanner.nextLine();
             //    end = scanner.nextLine();
             //}
-            if(whiteTurn && board.getSqareFromNotation(start).getPiece().isWhite()){
+            if(whiteTurn && board.getSqareFromNotation(start).getPiece() != null &&board.getSqareFromNotation(start).getPiece().isWhite()){
                 if(board.setMove(start, end)){
                     whiteTurn = !whiteTurn;
                 }
             }
-            else if(!whiteTurn && !board.getSqareFromNotation(start).getPiece().isWhite()){
+            else if(!whiteTurn && board.getSqareFromNotation(start).getPiece() != null &&!board.getSqareFromNotation(start).getPiece().isWhite()){
                 if(board.setMove(start, end)){
                     whiteTurn = !whiteTurn;
                 }
             }
         }
+
     }
 
     public static void main(String[] args){
